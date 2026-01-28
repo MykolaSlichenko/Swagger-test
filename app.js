@@ -4,6 +4,9 @@ const swaggerUI = require('swagger-ui-express');
 
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const swaggerOptions = {
     swaggerDefinition: {
         info: {
@@ -55,6 +58,54 @@ app.get('/books', (req, res) => {
 
 app.post('/books', (req, res) => {
     res.status(201).send("Book added")
+})
+
+/**
+ * @swagger
+ * /books/{id}:
+ *   put:
+ *     description: Update a book
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         type: integer
+ *         description: Book ID
+ *       - name: title
+ *         in: formData
+ *         required: true
+ *         type: string
+ *         description: New book title
+ *     responses:
+ *       200:
+ *         description: Book updated successfully
+ */
+
+app.put('/books/:id', (req, res) => {
+    res.send('Book updated');
+});
+
+/**
+ * @swagger
+ * /books/{id}:
+ *   delete:
+ *     summary: Delete a book
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Book ID
+ *     responses:
+ *       200:
+ *         description: Book deleted successfully
+ */
+
+app.delete('/books/:id', (req, res) => {
+    const { id } = req.params;
+
+    res.send(`Book with id ${id} deleted`);
 })
 
 app.listen((5000), () => console.log("listening on 5000"))
